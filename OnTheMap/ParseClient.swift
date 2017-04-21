@@ -62,9 +62,6 @@ func getStudentInformation(completionHandler:  @escaping (_ success: Bool, _ err
                 ParseClient.students.append(student)
             }
 
-            print("These are students",ParseClient.students)
-
-
         }
         completionHandler(true, nil)
     }

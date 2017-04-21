@@ -12,57 +12,44 @@ import MapKit
 class MapViewController: UIViewController, MKMapViewDelegate {
 
     @IBOutlet weak var mapView: MKMapView!
-    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
-    
-    var annotations = [MKPointAnnotation]()
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(true)
-        
-                let locations = ParseClient.students
-                
-                for studentLocation in locations {
-                    
-                    let lat = CLLocationDegrees(studentLocation.latitude)
-                    let long = CLLocationDegrees(studentLocation.longitude)
-                    
-                    let coordinate = CLLocationCoordinate2D(latitude: lat, longitude: long)
-                    
-                    
-                    let first = (studentLocation.firstName)
-                    let last = (studentLocation.lastName)
-                    let mediaURL = (studentLocation.linkUrl)
-                    
-                    
-                    let annotation = MKPointAnnotation()
-                    annotation.coordinate = coordinate
-                    annotation.title = "\(String(describing: first)) \(String(describing: last))"
-                    annotation.subtitle = mediaURL
-                    
-                    self.annotations.append(annotation)
-                }
 
-        
-                //self.stopNetworkActivity()
-            
-    }
-        
     override func viewDidLoad() {
        
         super.viewDidLoad()
-        print("View Loaded")
-        mapView.delegate = self
-        
+      
         loadStudentLocations()
                 
     }
     
     func loadStudentLocations() {
-                
-       
+        
+        var annotations = [MKPointAnnotation]()
+        let locations = ParseClient.students
+        
+        for studentLocation in locations {
+            
+            let lat = CLLocationDegrees(studentLocation.latitude)
+            let long = CLLocationDegrees(studentLocation.longitude)
+            
+            let coordinate = CLLocationCoordinate2D(latitude: lat, longitude: long)
+            
+            
+            let first = (studentLocation.firstName)
+            let last = (studentLocation.lastName)
+            let mediaURL = (studentLocation.linkUrl)
+            
+            
+            let annotation = MKPointAnnotation()
+            annotation.coordinate = coordinate
+            annotation.title = "\(String(describing: first)) \(String(describing: last))"
+            annotation.subtitle = mediaURL
+            
+            annotations.append(annotation)
             performUIUpdatesOnMain {
-                self.addAllStudents()
+                self.mapView.addAnnotations(annotations)
             }
+        }
+        
     }
     
     // MARK: - MKMapViewDelegate
@@ -107,23 +94,4 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     }
 
     
-    func addAllStudents() {
-
-        self.mapView.addAnnotations(annotations)
-        print("These are the annotations", annotations)
-
-                
-    }
-    
-    func startNetworkActivity() {
-        activityIndicator.startAnimating()
-        mapView.isHidden = true
-    }
-    
-    func stopNetworkActivity() {
-        activityIndicator.stopAnimating()
-        mapView.isHidden = false
-    }
-    
-
 }

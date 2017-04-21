@@ -16,7 +16,7 @@ struct StudentInfo {
     let linkUrl: String
     let latitude: Double
     let longitude: Double
-    //let updatedAt: String
+    let updatedAt: String
     
     init?(studentDict: [String: AnyObject]) {
        guard
@@ -25,8 +25,8 @@ struct StudentInfo {
         let LastName = studentDict["lastName"] as? String,
         let LinkUrl = studentDict["mediaURL"] as? String,
         let Latitude = studentDict["latitude"] as? Double,
-        let Longitude = studentDict["longitude"] as? Double
-        //let UpdatedAt = studentDict["updatedAt"] as? String
+        let Longitude = studentDict["longitude"] as? Double,
+        let UpdatedAt = studentDict["updatedAt"] as? String
         else {return nil}
         
         //self.accountKey = AccountKey
@@ -35,7 +35,7 @@ struct StudentInfo {
         self.linkUrl = LinkUrl
         self.latitude = Latitude
         self.longitude = Longitude
-        //self.updatedAt = UpdatedAt
+        self.updatedAt = UpdatedAt
 
     }
     
