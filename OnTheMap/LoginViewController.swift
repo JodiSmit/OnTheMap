@@ -28,9 +28,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         userEmail?.delegate = self
         userPassword?.delegate = self
         
-//        let tap = UITapGestureRecognizer(target: self, action: #selector(userDidTapView))
-//        loginView.addGestureRecognizer(tap)
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -78,15 +75,12 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     
     //MARK: New user request
     @IBAction func newUser(_ sender: AnyObject) {
-        print("New user button pressed")
-            let url = NSURL(string: "https://www.udacity.com/account/auth#!/signup")
-            UIApplication.shared.open(url! as URL)
-    
+        let url = NSURL(string: "https://www.udacity.com/account/auth#!/signup")
+        UIApplication.shared.open(url! as URL)
     }
-    
 
     
-    // MARK: - Show error alert
+    // MARK: -  Error alert setup
     func showAlert(_ sender: UIButton, message: String) {
         let errMessage = message
         
@@ -100,14 +94,16 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         self.present(alert, animated: true, completion: nil)
 
     }
-
+    
+    //MARK: Disables input and displays "busy" indicator while performing login.
     func startNetworkActivity() {
         activityIndicator.startAnimating()
         userEmail.isEnabled = false
         userPassword.isEnabled = false
         userLoginButton.isEnabled = false
     }
-    
+ 
+    //MARK: Re-enables input if necessary following login. Also hides "busy" indicator.
     func stopNetworkActivity() {
         activityIndicator.stopAnimating()
         userEmail.isEnabled = true
@@ -115,15 +111,19 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         userLoginButton.isEnabled = true
     }
    
-    // MARK: UITextFieldDelegate
-    
+    // MARK: UITextFieldDelegate functions
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
     }
     
-    // MARK: Show/Hide Keyboard
+    private func resignIfFirstResponder(_ textField: UITextField) {
+        if textField.isFirstResponder {
+            textField.resignFirstResponder()
+        }
+    }
     
+    // MARK: Show/Hide Keyboard functions
     func setupViewResizerOnKeyboardShown() {
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(keyboardWillShowForResizing),
@@ -162,17 +162,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillHide, object: nil)
     }
     
-    
-    private func resignIfFirstResponder(_ textField: UITextField) {
-        if textField.isFirstResponder {
-            textField.resignFirstResponder()
-        }
-    }
-    
-    func userDidTapView() {
-        resignIfFirstResponder(userEmail!)
-        resignIfFirstResponder(userPassword!)
-    }
+
+
 
 }
 

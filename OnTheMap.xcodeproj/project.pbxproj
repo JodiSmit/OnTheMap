@@ -13,6 +13,7 @@
 		6337E8631E81A3A400BD3286 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6337E8611E81A3A400BD3286 /* LaunchScreen.storyboard */; };
 		6337E8701E81A5CC00BD3286 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6337E86F1E81A5CC00BD3286 /* LoginViewController.swift */; };
 		633FF7171EA9110000E4AD07 /* MainTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633FF7161EA9110000E4AD07 /* MainTabViewController.swift */; };
+		635586B21EAA734D00791144 /* RoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 635586B11EAA734D00791144 /* RoundedButton.swift */; };
 		6378F16D1EA927FA0038007B /* ParseClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6378F1691EA927FA0038007B /* ParseClient.swift */; };
 		6378F16E1EA927FA0038007B /* StudentInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6378F16A1EA927FA0038007B /* StudentInfo.swift */; };
 		6378F16F1EA927FA0038007B /* UdacityClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6378F16B1EA927FA0038007B /* UdacityClient.swift */; };
@@ -20,6 +21,7 @@
 		63A422141EA9802600862B1B /* TableTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A422131EA9802600862B1B /* TableTableViewController.swift */; };
 		63C18CF91E955268007E9F48 /* GCDBlackBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63C18CF81E955268007E9F48 /* GCDBlackBox.swift */; };
 		63C18CFD1E95ADC7007E9F48 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63C18CFC1E95ADC7007E9F48 /* MapViewController.swift */; };
+		63F797941EAAD0360056D2FD /* NewPinViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F797931EAAD0360056D2FD /* NewPinViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,6 +33,7 @@
 		6337E8641E81A3A400BD3286 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = OnTheMap/Info.plist; sourceTree = "<group>"; };
 		6337E86F1E81A5CC00BD3286 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		633FF7161EA9110000E4AD07 /* MainTabViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTabViewController.swift; sourceTree = "<group>"; };
+		635586B11EAA734D00791144 /* RoundedButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundedButton.swift; sourceTree = "<group>"; };
 		6378F1691EA927FA0038007B /* ParseClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ParseClient.swift; path = OnTheMap/ParseClient.swift; sourceTree = "<group>"; };
 		6378F16A1EA927FA0038007B /* StudentInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StudentInfo.swift; path = OnTheMap/StudentInfo.swift; sourceTree = "<group>"; };
 		6378F16B1EA927FA0038007B /* UdacityClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UdacityClient.swift; path = OnTheMap/UdacityClient.swift; sourceTree = "<group>"; };
@@ -38,6 +41,7 @@
 		63A422131EA9802600862B1B /* TableTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableTableViewController.swift; sourceTree = "<group>"; };
 		63C18CF81E955268007E9F48 /* GCDBlackBox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GCDBlackBox.swift; sourceTree = "<group>"; };
 		63C18CFC1E95ADC7007E9F48 /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
+		63F797931EAAD0360056D2FD /* NewPinViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewPinViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,6 +58,7 @@
 		6337E84C1E81A3A400BD3286 = {
 			isa = PBXGroup;
 			children = (
+				635586B01EAA731B00791144 /* View */,
 				6337E86B1E81A3D500BD3286 /* Controllers */,
 				6337E86A1E81A3C900BD3286 /* Supporting Files */,
 				6337E86C1E81A3E100BD3286 /* Model */,
@@ -88,6 +93,7 @@
 				63C18CFC1E95ADC7007E9F48 /* MapViewController.swift */,
 				633FF7161EA9110000E4AD07 /* MainTabViewController.swift */,
 				63A422131EA9802600862B1B /* TableTableViewController.swift */,
+				63F797931EAAD0360056D2FD /* NewPinViewController.swift */,
 			);
 			name = Controllers;
 			path = OnTheMap;
@@ -104,6 +110,14 @@
 				6337E85C1E81A3A400BD3286 /* Main.storyboard */,
 			);
 			name = Model;
+			sourceTree = "<group>";
+		};
+		635586B01EAA731B00791144 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				635586B11EAA734D00791144 /* RoundedButton.swift */,
+			);
+			name = View;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -184,7 +198,9 @@
 				6378F16E1EA927FA0038007B /* StudentInfo.swift in Sources */,
 				6337E8591E81A3A400BD3286 /* AppDelegate.swift in Sources */,
 				63C18CF91E955268007E9F48 /* GCDBlackBox.swift in Sources */,
+				63F797941EAAD0360056D2FD /* NewPinViewController.swift in Sources */,
 				6378F16D1EA927FA0038007B /* ParseClient.swift in Sources */,
+				635586B21EAA734D00791144 /* RoundedButton.swift in Sources */,
 				6378F16F1EA927FA0038007B /* UdacityClient.swift in Sources */,
 				6378F1701EA927FA0038007B /* UdacityConstants.swift in Sources */,
 				63C18CFD1E95ADC7007E9F48 /* MapViewController.swift in Sources */,
@@ -326,6 +342,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)";
 				DEVELOPMENT_TEAM = 6D7XA4T6ES;
 				INFOPLIST_FILE = OnTheMap/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
