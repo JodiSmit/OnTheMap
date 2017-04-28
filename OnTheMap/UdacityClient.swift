@@ -14,10 +14,10 @@ class UdacityClient: NSObject {
     
     let session = URLSession.shared
     var sessionID: String? = nil
-    var accountKey: String? = ""
-    var firstName: String? = ""
-    var lastName: String? = ""
-    let login = LoginViewController()
+    static var accountKey: String? = ""
+    static var firstName: String? = ""
+    static var lastName: String? = ""
+
     
     //Singleton
     static let sharedInstance = UdacityClient()
@@ -76,7 +76,7 @@ class UdacityClient: NSObject {
             }
             
             self.sessionID = sessionId
-            self.accountKey = accountKey
+            UdacityClient.accountKey = accountKey
             self.getCurrentUserData(accountKey: accountKey) { (success, errorMessage) in
                 if success {
                     ParseClient.sharedInstance.getStudentInformation( completionHandler: {(success, ErrorMessage) -> Void in
@@ -88,7 +88,6 @@ class UdacityClient: NSObject {
             }
             
             print("Session is \(sessionId) and account is \(accountKey)")
-            
         }
         
         /* 7. Start the request */
@@ -135,8 +134,8 @@ class UdacityClient: NSObject {
                 print("Can't find [user]['first_name'] or [user]['last_name'] in response")
                 return
             }
-            self.firstName = firstName
-            self.lastName = lastName
+            UdacityClient.firstName = firstName
+            UdacityClient.lastName = lastName
             completionHandler(true, nil)
         }
         task.resume()

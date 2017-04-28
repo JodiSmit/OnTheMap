@@ -10,7 +10,7 @@ import Foundation
 
 
 struct StudentInfo {
-   // let accountKey: String
+    let accountKey: String
     let firstName: String
     let lastName: String
     let linkUrl: String
@@ -20,7 +20,7 @@ struct StudentInfo {
     
     init?(studentDict: [String: AnyObject]) {
        guard
- //       let AccountKey = studentDict["userId"] as? String,
+        let AccountKey = studentDict["uniqueKey"] as? String,
         let FirstName = studentDict["firstName"] as? String,
         let LastName = studentDict["lastName"] as? String,
         let LinkUrl = studentDict["mediaURL"] as? String,
@@ -29,7 +29,7 @@ struct StudentInfo {
         let UpdatedAt = studentDict["updatedAt"] as? String
         else {return nil}
         
-        //self.accountKey = AccountKey
+        self.accountKey = AccountKey
         self.firstName = FirstName
         self.lastName = LastName
         self.linkUrl = LinkUrl

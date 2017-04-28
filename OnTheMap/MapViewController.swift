@@ -6,6 +6,7 @@
 //  Copyright © 2017 None. All rights reserved.
 //
 
+import Foundation
 import UIKit
 import MapKit
 
