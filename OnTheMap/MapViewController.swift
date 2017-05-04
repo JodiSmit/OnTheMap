@@ -30,6 +30,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         for studentLocation in locations {
             
             let lat = CLLocationDegrees(studentLocation.latitude)
+
             let long = CLLocationDegrees(studentLocation.longitude)
             
             let coordinate = CLLocationCoordinate2D(latitude: lat, longitude: long)
@@ -93,6 +94,17 @@ class MapViewController: UIViewController, MKMapViewDelegate {
             }
         }
     }
-
+    
+    //Function to clear all pins
+    func removeAllAnnotations() {
+        let annotationsToRemove = mapView.annotations.filter { $0 !== mapView.userLocation }
+        mapView.removeAnnotations(annotationsToRemove)
+    }
+    
+    //MARK: Remove and re-add all pins (refresh)
+    @IBAction func refreshStudentPins(_ sender: Any) {
+        self.removeAllAnnotations()
+        self.loadStudentLocations()
+    }
     
 }

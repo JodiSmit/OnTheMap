@@ -26,10 +26,11 @@ class NewPinLocationViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         unsubscribeFromKeyboardNotifications()
+
+
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-
 
         if segue.identifier == "AddPin" {
             guard locationInput.text != nil else {
@@ -62,6 +63,9 @@ class NewPinLocationViewController: UIViewController {
         self.view.endEditing(true)
     }
     
+    @IBAction func findButtonPressed(_ sender: Any) {
+        performSegue(withIdentifier: "AddPin", sender: self)
+    }
     
     @IBAction func cancelButtonPressed(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)

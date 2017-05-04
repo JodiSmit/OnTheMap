@@ -14,19 +14,38 @@ class AddPinViewController: UIViewController {
 
     @IBOutlet weak var newPinMap: MKMapView!
     @IBOutlet weak var addUrlText: UITextField!
+    @IBOutlet weak var submitButton: RoundedButton!
+    @IBOutlet weak var cancelNavButton: UIBarButtonItem!
     
     var inputLocation: String?
-    
+    var lat: CLLocationDegrees?
+    var long: CLLocationDegrees?
     
     lazy var geocoder = CLGeocoder()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        view.sendSubview(toBack: newPinMap)
+        view.bringSubview(toFront: addUrlText)
+        view.bringSubview(toFront: submitButton)
+        //view.bringSubview(toFront: cancelNavButton)
+        geocodeAddress(inputLocation!)
     }
 
     @IBAction func submitButtonPressed(_ sender: Any) {
-        geocodeAddress(inputLocation!)
+        ParseClient.sharedInstance.addNewStudent(mapString: inputLocation!, mediaURL: addUrlText.text!, latitude: lat!, longitude: long!,  completionHandler: {(success, ErrorMessage) -> Void in
+            if success {
+                performUIUpdatesOnMain {
+                    self.presentingViewController?.presentingViewController?.dismiss(animated: true, completion: nil)
+                }
+
+            } else {
+                performUIUpdatesOnMain {
+                    self.showAlert(AnyObject.self as AnyObject, message: UdacityClient.ErrorMessages.newPinError)
+                }
+            }
+            })
+   
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -111,6 +130,8 @@ class AddPinViewController: UIViewController {
             
             if let location = location {
                 let coordinate = location.coordinate
+                lat = coordinate.latitude
+                long = coordinate.longitude
                 self.addLocationPin(coordinate)
             } else {
                 self.showAlert(UIButton!.self as AnyObject, message: UdacityClient.ErrorMessages.locError)
@@ -153,8 +174,6 @@ class AddPinViewController: UIViewController {
     func keyboardWillShowForResizing(notification: Notification) {
         if let keyboardSize = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue,
             let window = self.view.window?.frame {
-            // We're not just minusing the kb height from the view height because
-            // the view could already have been resized for the keyboard before
             self.view.frame = CGRect(x: self.view.frame.origin.x,
                                      y: self.view.frame.origin.y,
                                      width: self.view.frame.width,

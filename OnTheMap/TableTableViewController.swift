@@ -29,7 +29,7 @@ class TableTableViewController: UITableViewController {
         
         cell?.textLabel?.text = "\(studentLocation.firstName) \(studentLocation.lastName)"
         cell?.imageView?.image = UIImage(named: "icon_pin")
-        cell?.detailTextLabel?.text = studentLocation.updatedAt
+        cell?.detailTextLabel?.text = studentLocation.linkUrl
         
         return cell!
     }
@@ -51,6 +51,13 @@ class TableTableViewController: UITableViewController {
             alertController.addAction(dismissAction)
             
             present(alertController, animated: true, completion: nil)
+        }
+    }
+    
+    //MARK: Remove and re-add all pins (refresh)
+    @IBAction func refreshStudentPins(_ sender: Any) {
+        performUIUpdatesOnMain {
+            self.tableView.reloadData()
         }
     }
     
