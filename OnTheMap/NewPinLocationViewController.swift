@@ -65,10 +65,12 @@ class NewPinLocationViewController: UIViewController {
         self.view.endEditing(true)
     }
     
+    //MARK: Find button tapped
     @IBAction func findButtonPressed(_ sender: Any) {
         performSegue(withIdentifier: "AddPin", sender: self)
     }
     
+    //MARK: Cancel button tapped
     @IBAction func cancelButtonPressed(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
     }
@@ -103,8 +105,6 @@ class NewPinLocationViewController: UIViewController {
     func keyboardWillShowForResizing(notification: Notification) {
         if let keyboardSize = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue,
             let window = self.view.window?.frame {
-            // We're not just minusing the kb height from the view height because
-            // the view could already have been resized for the keyboard before
             self.view.frame = CGRect(x: self.view.frame.origin.x,
                                      y: self.view.frame.origin.y,
                                      width: self.view.frame.width,

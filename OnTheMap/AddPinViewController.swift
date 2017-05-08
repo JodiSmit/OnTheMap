@@ -12,10 +12,10 @@ import CoreLocation
 
 class AddPinViewController: UIViewController {
 
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var newPinMap: MKMapView!
     @IBOutlet weak var addUrlText: UITextField!
     @IBOutlet weak var submitButton: RoundedButton!
-    @IBOutlet weak var cancelNavButton: UIBarButtonItem!
     
     var inputLocation: String?
     var lat: CLLocationDegrees?
@@ -28,15 +28,19 @@ class AddPinViewController: UIViewController {
         view.sendSubview(toBack: newPinMap)
         view.bringSubview(toFront: addUrlText)
         view.bringSubview(toFront: submitButton)
-        //view.bringSubview(toFront: cancelNavButton)
         geocodeAddress(inputLocation!)
     }
 
     //MARK: Submit information to Parse and return to sending VC (map or tableview)
     @IBAction func submitButtonPressed(_ sender: Any) {
+        performUIUpdatesOnMain {
+            self.startGeocoding()
+        }
+
         ParseClient.sharedInstance.addNewStudent(mapString: inputLocation!, mediaURL: addUrlText.text!, latitude: lat!, longitude: long!,  completionHandler: {(success, ErrorMessage) -> Void in
             if success {
                 performUIUpdatesOnMain {
+                    self.stopGeocoding()
                     self.presentingViewController?.presentingViewController?.dismiss(animated: true, completion: nil)
                 }
 
@@ -49,6 +53,21 @@ class AddPinViewController: UIViewController {
    
     }
 
+    //MARK: Cancel button tapped
+    @IBAction func cancelButtonPressed(_ sender: Any) {
+        self.dismiss(animated: true, completion: nil)
+    }
+    
+    func startGeocoding() {
+        activityIndicator.startAnimating()
+        newPinMap.alpha = 0.5
+    }
+    
+    func stopGeocoding() {
+        activityIndicator.stopAnimating()
+        newPinMap.alpha = 1
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setupViewResizerOnKeyboardShown()
