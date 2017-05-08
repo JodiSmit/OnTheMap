@@ -10,8 +10,7 @@ import Foundation
 
 
 extension UdacityClient {
-    
-  
+
     struct ErrorMessages {
         static let noInputError = "Please provide login details!"
         static let loginError = "Udacity Login failed. Incorrect username or password."
@@ -22,6 +21,9 @@ extension UdacityClient {
         static let inputError = "Please insert a location!"
         static let locError = "No matching location found."
         static let newPinError = "Could not add pin."
+        static let urlError = "URL cannot be accessed. Please try again or select another student."
+        static let refreshError = "Could not refresh locations."
+        static let logoutError = "Could not log user out!"
     }
     
 }

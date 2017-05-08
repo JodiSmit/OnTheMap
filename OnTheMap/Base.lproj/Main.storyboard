@@ -139,7 +139,7 @@
         <!--Table View Controller-->
         <scene sceneID="Ass-EI-2b5">
             <objects>
-                <tableViewController id="MqX-zP-Zgh" userLabel="Table View Controller" customClass="TableTableViewController" customModule="OnTheMap" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="MqX-zP-Zgh" userLabel="Table View Controller" customClass="TableViewController" customModule="OnTheMap" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="rdF-OM-yMP">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -176,7 +176,11 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="On The Map" id="vKp-Dt-nbO">
-                        <barButtonItem key="leftBarButtonItem" title="Logout" id="YMO-dV-Knc"/>
+                        <barButtonItem key="leftBarButtonItem" title="Logout" id="YMO-dV-Knc">
+                            <connections>
+                                <action selector="logoutButtonPressed:" destination="MqX-zP-Zgh" id="3O1-Ts-rGi"/>
+                            </connections>
+                        </barButtonItem>
                         <rightBarButtonItems>
                             <barButtonItem image="icon_refresh" id="gzI-xd-gzB" userLabel="Refresh Button">
                                 <connections>
@@ -191,7 +195,7 @@
                         </rightBarButtonItems>
                     </navigationItem>
                     <connections>
-                        <outlet property="tableView" destination="rdF-OM-yMP" id="dzM-MF-3UA"/>
+                        <outlet property="locationTable" destination="rdF-OM-yMP" id="zlv-oQ-YZm"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Bgk-C9-2b4" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -202,12 +206,16 @@
         <scene sceneID="bWz-K8-ZXN">
             <objects>
                 <viewController storyboardIdentifier="MapViewController" id="Hig-W9-1qI" userLabel="Map View Controller" customClass="MapViewController" customModule="OnTheMap" customModuleProvider="target" sceneMemberID="viewController">
-                    <mapView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" id="VOp-cq-W2h">
+                    <mapView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" id="R8Q-zv-YIP">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     </mapView>
                     <navigationItem key="navigationItem" title="On The Map" id="2l1-wm-RoD">
-                        <barButtonItem key="leftBarButtonItem" title="Logout" id="G97-ZI-PPc"/>
+                        <barButtonItem key="leftBarButtonItem" title="Logout" id="G97-ZI-PPc">
+                            <connections>
+                                <action selector="logoutButtonPressed:" destination="Hig-W9-1qI" id="JMK-Wo-1lK"/>
+                            </connections>
+                        </barButtonItem>
                         <rightBarButtonItems>
                             <barButtonItem image="icon_refresh" id="Jyb-zh-dXt" userLabel="Refresh Button">
                                 <connections>
@@ -222,7 +230,7 @@
                         </rightBarButtonItems>
                     </navigationItem>
                     <connections>
-                        <outlet property="mapView" destination="VOp-cq-W2h" id="0ay-Xo-vdO"/>
+                        <outlet property="mapView" destination="R8Q-zv-YIP" id="PIC-OQ-YW4"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kE4-14-obd" userLabel="First Responder" sceneMemberID="firstResponder"/>

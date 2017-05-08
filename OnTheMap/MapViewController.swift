@@ -15,13 +15,12 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     @IBOutlet weak var mapView: MKMapView!
 
     override func viewDidLoad() {
-       
         super.viewDidLoad()
-      
         loadStudentLocations()
                 
     }
     
+    //MARK: Load pins on the map of student locations
     func loadStudentLocations() {
         
         var annotations = [MKPointAnnotation]()
@@ -30,23 +29,18 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         for studentLocation in locations {
             
             let lat = CLLocationDegrees(studentLocation.latitude)
-
             let long = CLLocationDegrees(studentLocation.longitude)
-            
             let coordinate = CLLocationCoordinate2D(latitude: lat, longitude: long)
-            
-            
             let first = (studentLocation.firstName)
             let last = (studentLocation.lastName)
             let mediaURL = (studentLocation.linkUrl)
-            
-            
             let annotation = MKPointAnnotation()
+            
             annotation.coordinate = coordinate
             annotation.title = "\(String(describing: first)) \(String(describing: last))"
             annotation.subtitle = mediaURL
-            
             annotations.append(annotation)
+            
             performUIUpdatesOnMain {
                 self.mapView.addAnnotations(annotations)
             }
@@ -82,29 +76,60 @@ class MapViewController: UIViewController, MKMapViewDelegate {
             if let studUrl = URL(string: ((view.annotation?.subtitle)!)!), app.canOpenURL(studUrl) {
                 app.open(studUrl, options: [:])
             } else {
-                let alertController = UIAlertController()
-                
-                alertController.title = "No Valid Url"
-                alertController.message = "The provided URL can't be opened, select a different student"
-                
-                let dismissAction = UIAlertAction(title: "ok", style: UIAlertActionStyle.cancel)
-                alertController.addAction(dismissAction)
-                
-                present(alertController, animated: true, completion: nil)
+                self.showAlert((Any).self, message: UdacityClient.ErrorMessages.urlError)
             }
         }
     }
     
     //Function to clear all pins
     func removeAllAnnotations() {
-        let annotationsToRemove = mapView.annotations.filter { $0 !== mapView.userLocation }
-        mapView.removeAnnotations(annotationsToRemove)
+        let allAnnotations = mapView.annotations
+        mapView.removeAnnotations(allAnnotations)
     }
     
     //MARK: Remove and re-add all pins (refresh)
     @IBAction func refreshStudentPins(_ sender: Any) {
         self.removeAllAnnotations()
-        self.loadStudentLocations()
+        
+        ParseClient.students.removeAll()
+        ParseClient.sharedInstance.getStudentInformation( completionHandler: {(success, ErrorMessage) -> Void in
+            if success {
+                self.loadStudentLocations()
+            } else {
+                self.showAlert((Any).self, message: UdacityClient.ErrorMessages.refreshError)
+            }
+        })
     }
     
+    
+    // MARK: -  Error alert setup
+    func showAlert(_ sender: Any, message: String) {
+        let errMessage = message
+        
+        let alert = UIAlertController(title: nil, message: errMessage, preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: { action in
+            alert.dismiss(animated: true, completion: nil)
+            
+        }))
+        
+        self.present(alert, animated: true, completion: nil)
+        
+    }
+    
+    //MARK: Logout button function to logout of Udacity and return to login screen.
+    @IBAction func logoutButtonPressed(_ sender: Any) {
+        UdacityClient.sharedInstance.deleteCurrentUser( {(success, ErrorMessage) -> Void in
+            if success {
+                performUIUpdatesOnMain {
+                    ParseClient.students.removeAll()
+                    self.dismiss(animated: true, completion: nil)
+                }
+            } else {
+                    performUIUpdatesOnMain  {
+                        self.showAlert((Any).self, message: UdacityClient.ErrorMessages.logoutError)
+                    }
+                
+            }
+        })
+    }
 }

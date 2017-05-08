@@ -29,7 +29,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         userPassword?.delegate = self
         
     }
-    
+    //MARK: Change status bar to light color.
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
@@ -61,28 +61,27 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                     self.showAlert(self.userLoginButton!, message: UdacityClient.ErrorMessages.loginError)
                     self.userEmail?.text = ""
                     self.userPassword?.text = ""
-                    print("This is the error stuff")
+
                 }
                 return
             }
-
       
             performUIUpdatesOnMain {
                 self.stopNetworkActivity()
                 let controller = self.storyboard?.instantiateViewController(withIdentifier: "MainTabController") as! UITabBarController
                 self.present(controller, animated: true, completion: nil)
+                self.userEmail?.text = ""
+                self.userPassword?.text = ""
             }
         }
-
     }
     
     
-    //MARK: New user request
+    //MARK: New user request button pressed
     @IBAction func newUser(_ sender: AnyObject) {
         let url = NSURL(string: "https://www.udacity.com/account/auth#!/signup")
         UIApplication.shared.open(url! as URL)
     }
-
     
     // MARK: -  Error alert setup
     func showAlert(_ sender: UIButton, message: String) {

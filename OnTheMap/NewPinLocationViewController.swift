@@ -30,6 +30,7 @@ class NewPinLocationViewController: UIViewController {
 
     }
     
+    //MARK: After user input of location, new VC will load to ask for URL detail.
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 
         if segue.identifier == "AddPin" {
@@ -47,6 +48,7 @@ class NewPinLocationViewController: UIViewController {
             return
         }
     }
+    
     // MARK: UITextFieldDelegate functions
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()

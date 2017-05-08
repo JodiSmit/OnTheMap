@@ -22,39 +22,32 @@ class UdacityClient: NSObject {
     //Singleton
     static let sharedInstance = UdacityClient()
     
+    //MARK: Function to pass email and password to Udacity API to log user in.
     func loginToUdacity(_ username: String, password: String, completionHandler: @escaping (_ success: Bool, _ errorMessage: String?) -> Void) {
         
-       
-        /* 1/2/3. Build the URL, Configure the request */
         let request = NSMutableURLRequest(url: NSURL(string: "https://www.udacity.com/api/session")! as URL)
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Accept")
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.httpBody = "{\"udacity\": {\"username\": \"\(username)\", \"password\": \"\(password)\"}}".data(using: String.Encoding.utf8)
       
-        /* 4. Make the request */
         let task = session.dataTask(with: request as URLRequest) { (data, response, error) in
-            
-            
-            /* GUARD: Was there an error? */
+
             guard (error == nil) else {
                 completionHandler(false, error?.localizedDescription)
                 return
             }
-            
-            /* GUARD: Did we get a successful 2XX response? */
+
             guard let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode >= 200 && statusCode <= 299 else {
                 completionHandler(false, "Your request returned a status code other than 2xx!")
                 return
             }
-            
-            /* GUARD: Was there any data returned? */
+
             guard let data = data else {
                 completionHandler(false, ErrorMessages.dataError)
                 return
             }
-            
-            /* 5/6. Parse the data and use the data (happens in completion handler) */
+
             let range = Range(5 ..< data.count)
             let newData = data.subdata(in: range) /* subset response data! */
             let parsedResult: [String:AnyObject]!
@@ -86,36 +79,29 @@ class UdacityClient: NSObject {
                         completionHandler(false, ErrorMessages.userError)
                     }
             }
-            
-            print("Session is \(sessionId) and account is \(accountKey)")
+
         }
-        
-        /* 7. Start the request */
+
         task.resume()
         
     }
     
+    //MARK: Function to obtain student data of logged-in user.
     func getCurrentUserData(accountKey: String, completionHandler: @escaping (_ success: Bool, _ errorMessage: String?) -> Void) {
-        
-        /* 1/2/3. Build the URL, Configure the request */
+
         let request = NSMutableURLRequest(url: NSURL(string: NSString(format: "https://www.udacity.com/api/users/%@", accountKey) as String)! as URL)
-        
-        /* 4. Make the request */
         let task = session.dataTask(with: request as URLRequest) { data, response, error in
-            
-            /* GUARD: Was there an error? */
+
             guard (error == nil) else {
                 completionHandler(false, error?.localizedDescription)
                 return
             }
-            
-            /* GUARD: Was there any data returned? */
+
             guard let data = data else {
                 completionHandler(false, ErrorMessages.dataError)
                 return
             }
-            
-            /* 5/6. Parse the data and use the data (happens in completion handler) */
+
             let range = Range(5 ..< data.count)
             let newData = data.subdata(in: range) /* subset response data! */
             let parsedResult: [String:AnyObject]!
@@ -141,4 +127,52 @@ class UdacityClient: NSObject {
         task.resume()
     }
 
+    //MARK: Delete current user session.
+    func deleteCurrentUser(_ completionHandler: @escaping (_ success: Bool, _ errorMsg: String?) -> Void) {
+        
+        let request = NSMutableURLRequest(url: URL(string: "https://www.udacity.com/api/session")!)
+        
+        request.httpMethod = "DELETE"
+        var xsrfCookie: HTTPCookie? = nil
+        let sharedCookieStorage = HTTPCookieStorage.shared
+        for cookie in sharedCookieStorage.cookies! {
+            if cookie.name == "XSRF-TOKEN" { xsrfCookie = cookie }
+        }
+        if let xsrfCookie = xsrfCookie {
+            request.setValue(xsrfCookie.value, forHTTPHeaderField: "X-XSRF-TOKEN")
+        }
+        
+        let task = session.dataTask(with: request as URLRequest) { data, response, error in
+            
+            guard (error == nil) else {
+                completionHandler(false, error?.localizedDescription)
+                return
+            }
+            
+            guard let data = data else {
+                completionHandler(false, ErrorMessages.dataError)
+                return
+            }
+            
+            let range = Range(5 ..< data.count)
+            let newData = data.subdata(in: range)
+            let parsedResult: [String:AnyObject]!
+            do {
+                parsedResult = try JSONSerialization.jsonObject(with: newData, options: .allowFragments) as! [String:AnyObject]
+            } catch {
+                completionHandler(false,"Could not parse the data as JSON: '\(newData)'")
+                return
+            }
+            
+            if let _ = parsedResult["session"] as? [String:AnyObject] {
+                self.sessionID = nil
+                UdacityClient.firstName = ""
+                UdacityClient.lastName = ""
+                completionHandler(true, nil)
+            } else {
+                completionHandler(false, UdacityClient.ErrorMessages.genError)
+            }
+        }
+        task.resume()
+    }
 }

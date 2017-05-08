@@ -32,6 +32,7 @@ class AddPinViewController: UIViewController {
         geocodeAddress(inputLocation!)
     }
 
+    //MARK: Submit information to Parse and return to sending VC (map or tableview)
     @IBAction func submitButtonPressed(_ sender: Any) {
         ParseClient.sharedInstance.addNewStudent(mapString: inputLocation!, mediaURL: addUrlText.text!, latitude: lat!, longitude: long!,  completionHandler: {(success, ErrorMessage) -> Void in
             if success {
