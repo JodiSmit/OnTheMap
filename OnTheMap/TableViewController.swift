@@ -41,8 +41,15 @@ class TableViewController: UITableViewController {
         
         let studentLocation = locations[indexPath.row]
         
-        if let studentUrl = URL(string: studentLocation.linkUrl), UIApplication.shared.canOpenURL(studentUrl) {
-            UIApplication.shared.open(studentUrl, options: [:])
+        var completeURL = studentLocation.linkUrl
+        
+        if studentLocation.linkUrl.range(of: "http://") == nil && studentLocation.linkUrl.range(of: "https://") == nil  {
+            completeURL = "http://" + studentLocation.linkUrl
+        }
+        print(completeURL)
+        
+        if let studentUrl = URL(string: completeURL) {
+            UIApplication.shared.open(studentUrl as URL)
         } else {
             let alertController = UIAlertController()
             

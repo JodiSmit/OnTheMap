@@ -36,8 +36,8 @@ class AddPinViewController: UIViewController {
         performUIUpdatesOnMain {
             self.startGeocoding()
         }
-
-        ParseClient.sharedInstance.addNewStudent(mapString: inputLocation!, mediaURL: addUrlText.text!, latitude: lat!, longitude: long!,  completionHandler: {(success, ErrorMessage) -> Void in
+        let urlPassed = "http://" + addUrlText.text!
+        ParseClient.sharedInstance.addNewStudent(mapString: inputLocation!, mediaURL: urlPassed, latitude: lat!, longitude: long!,  completionHandler: {(success, ErrorMessage) -> Void in
             if success {
                 performUIUpdatesOnMain {
                     self.stopGeocoding()
