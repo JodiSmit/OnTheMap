@@ -16,7 +16,7 @@ class ParseClient: NSObject {
     //Singleton
     static let sharedInstance = ParseClient()
     
-    static var students = [StudentInfo]()
+    //static var students = [StudentInfo]()
     
     //MARK: Function to get max 100 student locations.
     func getStudentInformation(completionHandler:  @escaping (_ success: Bool, _ errorMessage: String?) -> Void) {
@@ -52,10 +52,10 @@ class ParseClient: NSObject {
             
             for result in results {
                 if let student = StudentInfo(studentDict: result) {
-                    ParseClient.students.append(student)
-                    ParseClient.students.sort(by: {
-                        $1.updatedAt < $0.updatedAt
-                    })
+                    StudentDataSource.sharedInstance.studentData.append(student)
+                    //StudentDataSource.sharedInstance.studentData.sorted(by: {
+//                        $1.updatedAt < $0.updatedAt
+//                    })
                 }
             }
             completionHandler(true, nil)

@@ -10,7 +10,7 @@ import UIKit
 import MapKit
 import CoreLocation
 
-class AddPinViewController: UIViewController {
+class AddPinViewController: UIViewController, UITextFieldDelegate {
 
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var newPinMap: MKMapView!
@@ -29,6 +29,7 @@ class AddPinViewController: UIViewController {
         view.bringSubview(toFront: addUrlText)
         view.bringSubview(toFront: submitButton)
         geocodeAddress(inputLocation!)
+        addUrlText.delegate = self
     }
 
     //MARK: Submit information to Parse and return to sending VC (map or tableview)

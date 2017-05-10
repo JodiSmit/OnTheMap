@@ -9,7 +9,7 @@
 import UIKit
 
 
-class NewPinLocationViewController: UIViewController {
+class NewPinLocationViewController: UIViewController, UITextFieldDelegate {
 
     
     @IBOutlet weak var findButton: RoundedButton!
@@ -17,6 +17,7 @@ class NewPinLocationViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        locationInput.delegate = self
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)

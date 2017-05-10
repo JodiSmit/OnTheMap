@@ -40,3 +40,9 @@ struct StudentInfo {
     }
     
 }
+
+class StudentDataSource {
+    var studentData = [StudentInfo]()
+    static let sharedInstance = StudentDataSource()
+    private init() {}
+}

@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		630026C81EB2B87B00BE96B2 /* NewPinLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630026C71EB2B87B00BE96B2 /* NewPinLocationViewController.swift */; };
 		630026CA1EB2B95200BE96B2 /* AddPinViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630026C91EB2B95200BE96B2 /* AddPinViewController.swift */; };
+		633228C81EC27F58009728C3 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633228C71EC27F58009728C3 /* Reachability.swift */; };
 		6337E8591E81A3A400BD3286 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6337E8581E81A3A400BD3286 /* AppDelegate.swift */; };
 		6337E85E1E81A3A400BD3286 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6337E85C1E81A3A400BD3286 /* Main.storyboard */; };
 		6337E8601E81A3A400BD3286 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6337E85F1E81A3A400BD3286 /* Assets.xcassets */; };
@@ -27,6 +28,7 @@
 /* Begin PBXFileReference section */
 		630026C71EB2B87B00BE96B2 /* NewPinLocationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewPinLocationViewController.swift; sourceTree = "<group>"; };
 		630026C91EB2B95200BE96B2 /* AddPinViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddPinViewController.swift; sourceTree = "<group>"; };
+		633228C71EC27F58009728C3 /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		6337E8551E81A3A400BD3286 /* OnTheMap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OnTheMap.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6337E8581E81A3A400BD3286 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6337E85D1E81A3A400BD3286 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -83,6 +85,7 @@
 				6337E85F1E81A3A400BD3286 /* Assets.xcassets */,
 				6337E8611E81A3A400BD3286 /* LaunchScreen.storyboard */,
 				63C18CF81E955268007E9F48 /* GCDBlackBox.swift */,
+				633228C71EC27F58009728C3 /* Reachability.swift */,
 			);
 			name = "Supporting Files";
 			path = OnTheMap;
@@ -205,6 +208,7 @@
 				6378F1701EA927FA0038007B /* UdacityConstants.swift in Sources */,
 				63C18CFD1E95ADC7007E9F48 /* MapViewController.swift in Sources */,
 				630026CA1EB2B95200BE96B2 /* AddPinViewController.swift in Sources */,
+				633228C81EC27F58009728C3 /* Reachability.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

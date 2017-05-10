@@ -15,6 +15,7 @@ extension UdacityClient {
         static let noInputError = "Please provide login details!"
         static let loginError = "Udacity Login failed. Incorrect username or password."
         static let dataError = "No data was returned."
+        static let networkError = "No connection to the Internet!"
         static let userError = "Unable to get user data."
         static let studentError = "Unable to get student data."
         static let genError = "An error was returned."

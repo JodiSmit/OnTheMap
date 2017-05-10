@@ -12,7 +12,7 @@ class TableViewController: UITableViewController {
 
     @IBOutlet weak var locationTable: UITableView!
    
-    var locations = ParseClient.students
+    var locations = StudentDataSource.sharedInstance.studentData
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -66,10 +66,10 @@ class TableViewController: UITableViewController {
     //MARK: Remove and re-add all pins (refresh)
     @IBAction func refreshStudentPins(_ sender: Any) {
         
-        ParseClient.students.removeAll()
+        StudentDataSource.sharedInstance.studentData.removeAll()
         ParseClient.sharedInstance.getStudentInformation( completionHandler: {(success, ErrorMessage) -> Void in
             if success {
-                self.locations = ParseClient.students
+                self.locations = StudentDataSource.sharedInstance.studentData
                 performUIUpdatesOnMain {
                     self.locationTable.reloadData()
                 }
@@ -98,7 +98,7 @@ class TableViewController: UITableViewController {
         UdacityClient.sharedInstance.deleteCurrentUser( {(success, ErrorMessage) -> Void in
             if success {
                 performUIUpdatesOnMain {
-                    ParseClient.students.removeAll()
+                    StudentDataSource.sharedInstance.studentData.removeAll()
                     self.dismiss(animated: true, completion: nil)
                 }
             } else {

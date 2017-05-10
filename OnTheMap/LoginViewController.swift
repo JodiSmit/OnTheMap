@@ -53,26 +53,38 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             showAlert(userLoginButton!, message: UdacityClient.ErrorMessages.noInputError)
             return
         }
-
-        UdacityClient.sharedInstance.loginToUdacity((userEmail?.text!)!, password: (userPassword?.text!)!) {
-            (success, ErrorMessage) -> Void in
-            guard success else {
+        
+        Reachability.isInternetAvailable(webSiteToPing: nil) { (isInternetAvailable) in
+            guard isInternetAvailable else {
                 performUIUpdatesOnMain {
-                    self.showAlert(self.userLoginButton!, message: UdacityClient.ErrorMessages.loginError)
-                    self.userEmail?.text = ""
+                    self.stopNetworkActivity()
                     self.userPassword?.text = ""
-
+                    self.showAlert(self.userLoginButton!, message: UdacityClient.ErrorMessages.networkError)
                 }
                 return
             }
-      
-            performUIUpdatesOnMain {
-                self.stopNetworkActivity()
-                let controller = self.storyboard?.instantiateViewController(withIdentifier: "MainTabController") as! UITabBarController
-                self.present(controller, animated: true, completion: nil)
-                self.userEmail?.text = ""
-                self.userPassword?.text = ""
+            
+            UdacityClient.sharedInstance.loginToUdacity((self.userEmail?.text!)!, password: (self.userPassword?.text!)!) {
+                (success, ErrorMessage) -> Void in
+                guard success else {
+                    performUIUpdatesOnMain {
+                        self.showAlert(self.userLoginButton!, message: UdacityClient.ErrorMessages.loginError)
+                        self.userEmail?.text = ""
+                        self.userPassword?.text = ""
+                        
+                    }
+                    return
+                }
+                
+                performUIUpdatesOnMain {
+                    self.stopNetworkActivity()
+                    let controller = self.storyboard?.instantiateViewController(withIdentifier: "MainTabController") as! UITabBarController
+                    self.present(controller, animated: true, completion: nil)
+                    self.userEmail?.text = ""
+                    self.userPassword?.text = ""
+                }
             }
+
         }
     }
     

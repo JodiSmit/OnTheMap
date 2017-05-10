@@ -25,7 +25,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     func loadStudentLocations() {
         
         var annotations = [MKPointAnnotation]()
-        let locations = ParseClient.students
+        let locations = StudentDataSource.sharedInstance.studentData
         
         for studentLocation in locations {
             
@@ -92,7 +92,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     @IBAction func refreshStudentPins(_ sender: Any) {
         self.removeAllAnnotations()
         
-        ParseClient.students.removeAll()
+        StudentDataSource.sharedInstance.studentData.removeAll()
         ParseClient.sharedInstance.getStudentInformation( completionHandler: {(success, ErrorMessage) -> Void in
             if success {
                 self.loadStudentLocations()
@@ -122,7 +122,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         UdacityClient.sharedInstance.deleteCurrentUser( {(success, ErrorMessage) -> Void in
             if success {
                 performUIUpdatesOnMain {
-                    ParseClient.students.removeAll()
+                    StudentDataSource.sharedInstance.studentData.removeAll()
                     self.dismiss(animated: true, completion: nil)
                 }
             } else {
