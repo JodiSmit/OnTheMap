@@ -11,15 +11,15 @@ import UIKit
 import MapKit
 
 class MapViewController: UIViewController, MKMapViewDelegate {
-
-
+    
+    
     @IBOutlet weak var mapView: MKMapView!
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         mapView.delegate = self
         loadStudentLocations()
-                
+        
     }
     
     //MARK: Load pins on the map of student locations
@@ -103,21 +103,6 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         })
     }
     
-    
-    // MARK: -  Error alert setup
-    func showAlert(_ sender: Any, message: String) {
-        let errMessage = message
-        
-        let alert = UIAlertController(title: nil, message: errMessage, preferredStyle: UIAlertControllerStyle.alert)
-        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: { action in
-            alert.dismiss(animated: true, completion: nil)
-            
-        }))
-        
-        self.present(alert, animated: true, completion: nil)
-        
-    }
-    
     //MARK: Logout button function to logout of Udacity and return to login screen.
     @IBAction func logoutButtonPressed(_ sender: Any) {
         UdacityClient.sharedInstance.deleteCurrentUser( {(success, ErrorMessage) -> Void in
@@ -127,9 +112,9 @@ class MapViewController: UIViewController, MKMapViewDelegate {
                     self.dismiss(animated: true, completion: nil)
                 }
             } else {
-                    performUIUpdatesOnMain  {
-                        self.showAlert((Any).self, message: UdacityClient.ErrorMessages.logoutError)
-                    }
+                performUIUpdatesOnMain  {
+                    self.showAlert((Any).self, message: UdacityClient.ErrorMessages.logoutError)
+                }
                 
             }
         })

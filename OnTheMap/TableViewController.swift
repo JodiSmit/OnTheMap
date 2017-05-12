@@ -9,15 +9,11 @@
 import UIKit
 
 class TableViewController: UITableViewController {
-
+    
     @IBOutlet weak var locationTable: UITableView!
-   
+    
     var locations = StudentDataSource.sharedInstance.studentData
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
-
+    
     //MARK: Returns location count
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return locations.count
@@ -46,7 +42,6 @@ class TableViewController: UITableViewController {
         if studentLocation.linkUrl.range(of: "http://") == nil && studentLocation.linkUrl.range(of: "https://") == nil  {
             completeURL = "http://" + studentLocation.linkUrl
         }
-        print(completeURL)
         
         if let studentUrl = URL(string: completeURL) {
             UIApplication.shared.open(studentUrl as URL)
@@ -61,6 +56,7 @@ class TableViewController: UITableViewController {
             
             present(alertController, animated: true, completion: nil)
         }
+        tableView.deselectRow(at: indexPath, animated: true)
     }
     
     //MARK: Remove and re-add all pins (refresh)
@@ -79,19 +75,6 @@ class TableViewController: UITableViewController {
         })
     }
     
-    // MARK: -  Error alert setup
-    func showAlert(_ sender: Any, message: String) {
-        let errMessage = message
-        
-        let alert = UIAlertController(title: nil, message: errMessage, preferredStyle: UIAlertControllerStyle.alert)
-        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: { action in
-            alert.dismiss(animated: true, completion: nil)
-            
-        }))
-        
-        self.present(alert, animated: true, completion: nil)
-        
-    }
     
     //MARK: Logout button function to logout of Udacity and return to login screen.
     @IBAction func logoutButtonPressed(_ sender: Any) {

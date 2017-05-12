@@ -49,8 +49,6 @@ class NewPinLocationViewController: UIViewController, UITextFieldDelegate {
             return
         }
     }
-
-    
     
     //MARK: Find button tapped
     @IBAction func findButtonPressed(_ sender: Any) {
@@ -85,7 +83,7 @@ class NewPinLocationViewController: UIViewController, UITextFieldDelegate {
     private func geocodeResponse(withPlacemarks placemarks: [CLPlacemark]?, error: Error?) {
         
         if error != nil {
-            self.showAlert(UIButton!.self as AnyObject, message: UdacityClient.ErrorMessages.geoError)
+            self.showAlert(findButton, message: UdacityClient.ErrorMessages.geoError)
             
         } else {
             var location: CLLocation?
@@ -98,7 +96,7 @@ class NewPinLocationViewController: UIViewController, UITextFieldDelegate {
                 self.coordinates = location.coordinate
                 print(self.coordinates!)
             } else {
-                self.showAlert(UIButton!.self as AnyObject, message: UdacityClient.ErrorMessages.locError)
+                self.showAlert(findButton, message: UdacityClient.ErrorMessages.locError)
             }
         }
     }
@@ -119,63 +117,13 @@ class NewPinLocationViewController: UIViewController, UITextFieldDelegate {
         self.view.endEditing(true)
     }
     
-    // MARK: -  Error alert setup
-    func showAlert(_ sender: AnyObject, message: String) {
-        let errMessage = message
-        
-        let alert = UIAlertController(title: nil, message: errMessage, preferredStyle: UIAlertControllerStyle.alert)
-        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: { action in
-            alert.dismiss(animated: true, completion: nil)
-            
-        }))
-        
-        self.present(alert, animated: true, completion: nil)
-        
-    }
-    
+    //MARK: Activity indicator control functions.
     func startGeocoding() {
         activityIndicator.startAnimating()
     }
     
     func stopGeocoding() {
         activityIndicator.stopAnimating()
-    }
-    
-    // MARK: Show/Hide Keyboard functions
-    func setupViewResizerOnKeyboardShown() {
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(keyboardWillShowForResizing),
-                                               name: Notification.Name.UIKeyboardWillShow,
-                                               object: nil)
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(keyboardWillHideForResizing),
-                                               name: Notification.Name.UIKeyboardWillHide,
-                                               object: nil)
-    }
-    
-    func keyboardWillShowForResizing(notification: Notification) {
-        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue,
-            let window = self.view.window?.frame {
-            self.view.frame = CGRect(x: self.view.frame.origin.x,
-                                     y: self.view.frame.origin.y,
-                                     width: self.view.frame.width,
-                                     height: window.origin.y + window.height - keyboardSize.height)
-        }
-    }
-    
-    func keyboardWillHideForResizing(notification: Notification) {
-        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
-            let viewHeight = self.view.frame.height
-            self.view.frame = CGRect(x: self.view.frame.origin.x,
-                                     y: self.view.frame.origin.y,
-                                     width: self.view.frame.width,
-                                     height: viewHeight + keyboardSize.height)
-        }
-    }
-    
-    func unsubscribeFromKeyboardNotifications() {
-        NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillHide, object: nil)
     }
     
 }
