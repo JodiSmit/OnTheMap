@@ -60,7 +60,7 @@ class NewPinLocationViewController: UIViewController, UITextFieldDelegate {
         userLocation = locationInput.text!
         performUIUpdatesOnMain {
             self.geocodeAddress(self.userLocation!)
-            self.stopGeocoding()
+
         }
     }
     
@@ -72,31 +72,30 @@ class NewPinLocationViewController: UIViewController, UITextFieldDelegate {
     //MARK: Function to geocode address String
     private func geocodeAddress(_ inputLocation: String) {
         self.geocoder.geocodeAddressString(inputLocation) { (placemarks, error) -> Void in
-            self.geocodeResponse(withPlacemarks: placemarks, error: error)
-            performUIUpdatesOnMain {
-                self.performSegue(withIdentifier: "AddPin", sender: self)
-            }
-        }
-    }
-    
-    //MARK: Perform geocoding of address entered
-    private func geocodeResponse(withPlacemarks placemarks: [CLPlacemark]?, error: Error?) {
-        
-        if error != nil {
-            self.showAlert(findButton, message: UdacityClient.ErrorMessages.geoError)
             
-        } else {
-            var location: CLLocation?
-            
-            if let placemarks = placemarks, placemarks.count > 0 {
-                location = placemarks.first?.location
-            }
-            
-            if let location = location {
-                self.coordinates = location.coordinate
-                print(self.coordinates!)
+            if error != nil {
+                self.stopGeocoding()
+                self.showAlert(self.findButton, message: UdacityClient.ErrorMessages.geoError)
+                self.locationInput.text = ""
+                
             } else {
-                self.showAlert(findButton, message: UdacityClient.ErrorMessages.locError)
+                var location: CLLocation?
+                
+                if let placemarks = placemarks, placemarks.count > 0 {
+                    location = placemarks.first?.location
+                }
+                
+                if let location = location {
+                    self.coordinates = location.coordinate
+                } else {
+                    self.stopGeocoding()
+                    self.showAlert(self.findButton, message: UdacityClient.ErrorMessages.locError)
+                }
+                
+                performUIUpdatesOnMain {
+                    self.stopGeocoding()
+                    self.performSegue(withIdentifier: "AddPin", sender: self)
+                }
             }
         }
     }
