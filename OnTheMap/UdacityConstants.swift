@@ -25,6 +25,8 @@ extension UdacityClient {
         static let urlError = "URL cannot be accessed. Please try again or select another student."
         static let refreshError = "Could not refresh locations."
         static let logoutError = "Could not log user out!"
+        static let urlInputError = "Please insert a valid URL."
+        static let geoError = "Unable to process location. Please enter a valid location."
     }
     
 }

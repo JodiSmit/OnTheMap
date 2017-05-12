@@ -12,36 +12,40 @@ import CoreLocation
 
 class AddPinViewController: UIViewController, UITextFieldDelegate {
 
-    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+
     @IBOutlet weak var newPinMap: MKMapView!
     @IBOutlet weak var addUrlText: UITextField!
     @IBOutlet weak var submitButton: RoundedButton!
     
-    var inputLocation: String?
+    var inputCoordinates: CLLocationCoordinate2D?
     var lat: CLLocationDegrees?
     var long: CLLocationDegrees?
-    
-    lazy var geocoder = CLGeocoder()
+    var geocodedLocation: String?
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.sendSubview(toBack: newPinMap)
         view.bringSubview(toFront: addUrlText)
         view.bringSubview(toFront: submitButton)
-        geocodeAddress(inputLocation!)
         addUrlText.delegate = self
+        performUIUpdatesOnMain {
+            self.addLocationPin(self.inputCoordinates!)
+
+        }
     }
 
     //MARK: Submit information to Parse and return to sending VC (map or tableview)
     @IBAction func submitButtonPressed(_ sender: Any) {
-        performUIUpdatesOnMain {
-            self.startGeocoding()
+
+        
+        guard addUrlText?.text!.isEmpty == false else {
+            showAlert(submitButton!, message: UdacityClient.ErrorMessages.urlInputError)
+            return
         }
-        let urlPassed = "http://" + addUrlText.text!
-        ParseClient.sharedInstance.addNewStudent(mapString: inputLocation!, mediaURL: urlPassed, latitude: lat!, longitude: long!,  completionHandler: {(success, ErrorMessage) -> Void in
+        ParseClient.sharedInstance.addNewStudent(mapString: geocodedLocation!, mediaURL: addUrlText.text!, latitude: lat!, longitude: long!,  completionHandler: {(success, ErrorMessage) -> Void in
             if success {
                 performUIUpdatesOnMain {
-                    self.stopGeocoding()
                     self.presentingViewController?.presentingViewController?.dismiss(animated: true, completion: nil)
                 }
 
@@ -56,18 +60,10 @@ class AddPinViewController: UIViewController, UITextFieldDelegate {
 
     //MARK: Cancel button tapped
     @IBAction func cancelButtonPressed(_ sender: Any) {
-        self.dismiss(animated: true, completion: nil)
+        self.presentingViewController?.presentingViewController?.dismiss(animated: true, completion: nil)
     }
     
-    func startGeocoding() {
-        activityIndicator.startAnimating()
-        newPinMap.alpha = 0.5
-    }
-    
-    func stopGeocoding() {
-        activityIndicator.stopAnimating()
-        newPinMap.alpha = 1
-    }
+
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -117,6 +113,8 @@ class AddPinViewController: UIViewController, UITextFieldDelegate {
         
         let annotation = MKPointAnnotation()
         annotation.coordinate = coordinates
+        lat = coordinates.latitude
+        long = coordinates.longitude
         annotation.title = "Your location"
         newPinMap.addAnnotation(annotation)
         
@@ -128,38 +126,7 @@ class AddPinViewController: UIViewController, UITextFieldDelegate {
         newPinMap.setRegion(coordinateRegion, animated: true)
     }
     
-    //MARK: Function to place pin on map based on location input
-    func geocodeAddress(_ inputLocation: String) {
-        geocoder.geocodeAddressString(inputLocation) { (placemarks, error) in
-            self.processGeocodeResponse(withPlacemarks: placemarks, error: error)
-        }
    
-    }
-    
-    //MARK: Perform geocoding of address entered
-    func processGeocodeResponse(withPlacemarks placemarks: [CLPlacemark]?, error: Error?) {
-       
-        if let error = error {
-            print("Unable to Forward Geocode Address (\(error))")
-            
-        } else {
-            var location: CLLocation?
-            
-            if let placemarks = placemarks, placemarks.count > 0 {
-                location = placemarks.first?.location
-            }
-            
-            if let location = location {
-                let coordinate = location.coordinate
-                lat = coordinate.latitude
-                long = coordinate.longitude
-                self.addLocationPin(coordinate)
-            } else {
-                self.showAlert(UIButton!.self as AnyObject, message: UdacityClient.ErrorMessages.locError)
-            }
-        }
-    }
-    
     // MARK: -  Error alert setup
     func showAlert(_ sender: AnyObject, message: String) {
         let errMessage = message
